@@ -1,8 +1,10 @@
-# F# adapter (scaffold)
+# F# adapter
 
-Implement the F# adapter here. It must call across the FFI boundary only:
+The implementation lives in `FSharpPolycall/Polycall.fs`. It crosses the
+P/Invoke/FFI boundary only through:
 
     status = polycall_ffi_run_config("fsharp-polycallrc", /*run=*/1)
 
-Return/raise a F#-native error when `status` is non-zero. Do not parse
-config or duplicate any core logic. See ../../../docs/adapter-pattern.md.
+`runConfig` returns the status, `tryRunConfig` returns an F# `Result`, and
+`runConfigOrRaise` raises `PolycallException`. No configuration parsing or core
+runtime logic belongs in this binding.

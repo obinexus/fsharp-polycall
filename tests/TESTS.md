@@ -1,4 +1,5 @@
-# F# tests (scaffold)
+# F# tests
 
-Add a smoke test that loads `../fsharp-polycallrc`, calls the adapter, and asserts a
-zero status. Mirror the reference bindings (pypolycall / rust-polycall).
+`npm test` runs the native forwarding test, thin-adapter audit, and npm package
+integrity test. `npm run test:fsharp` additionally builds and runs the .NET 8
+F#/PInvoke smoke project through a mock native library.

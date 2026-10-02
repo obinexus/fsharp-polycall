@@ -1,4 +1,5 @@
-# Example F# runtime override
+# Example F# runtime override (same grammar as ../fsharp-polycallrc;
+# check it with `polycall config validate examples/fsharp-polycallrc`).
 log_level=debug
 max_connections=128
 network_timeout=2000

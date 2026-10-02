@@ -1,0 +1,15 @@
+# QA descriptor for the Polycall binding matrix (read by polycall/qa/run_qa.py).
+# This repository is NOT a Python package and is not pip-installable;
+# its native manifest is src/FSharpPolycall/FSharpPolycall.fsproj.
+[tool.polycall.binding]
+name = "fsharp-polycall"
+language = "F#"
+native_manifest = "src/FSharpPolycall/FSharpPolycall.fsproj"
+registry = "npm"
+package = "@obinexusltd/fsharp-polycall"
+abi = 1
+support = "supported"
+linux_image = "mcr.microsoft.com/dotnet/sdk:8.0"
+build = "dotnet build src/FSharpPolycall.Cli/FSharpPolycall.Cli.fsproj -c Release"
+test = "sh /qa/build-linux-core.sh && POLYCALL_LIBRARY=/opt/polycall/lib/libpolycall.so.1 POLYCALL_CLI=/opt/polycall/bin/polycall sh scripts/test.sh"
+windows_test = "dotnet run --project tests/FSharpPolycall.Tests/FSharpPolycall.Tests.fsproj -c Release -- --summary  (with POLYCALL_LIBRARY=<prefix>/bin/polycall.dll and POLYCALL_CLI=<prefix>/bin/polycall.exe)"

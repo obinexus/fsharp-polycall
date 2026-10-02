@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <!-- Expecto runs as a console app: `dotnet run` with the SDK, or
+         `dotnet FSharpPolycall.Tests.dll` with only the .NET 8 runtime. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/FSharpPolycall/FSharpPolycall.fsproj" />
+    <PackageReference Include="Expecto" Version="11.1.0" />
+    <Compile Include="Fixtures.fs" />
+    <Compile Include="LibraryTests.fs" />
+    <Compile Include="ConfigTests.fs" />
+    <Compile Include="CallTests.fs" />
+    <Compile Include="PeerTests.fs" />
+    <Compile Include="InteropTests.fs" />
+    <Compile Include="Main.fs" />
+  </ItemGroup>
+</Project>

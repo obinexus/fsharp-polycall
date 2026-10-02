@@ -1,13 +1,17 @@
 {
   "name": "fsharp-polycall",
   "package": "@obinexusltd/fsharp-polycall",
-  "version": "1.5.0",
+  "nuget": "OBINexus.FSharpPolycall",
+  "version": "1.0.0",
   "language": "F#",
   "adapter": true,
-  "ffi": true,
+  "ffi": "P/Invoke (DllImport, cdecl) straight to polycall.dll / libpolycall.so.1, no C glue",
+  "abi": 1,
   "entry_point": "polycall_ffi_run_config",
   "config": "fsharp-polycallrc",
-  "core": "../../src",
+  "core": "polycall >= 1.1.0 (binding ABI 1)",
+  "core_repository": "https://github.com/obinexus/polycall",
+  "repository": "https://github.com/obinexus/fsharp-polycall",
   "license": "MIT",
   "author": "Nnamdi Michael Okpala"
 }

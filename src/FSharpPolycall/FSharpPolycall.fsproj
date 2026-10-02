@@ -5,13 +5,18 @@
     <PackageId>OBINexus.FSharpPolycall</PackageId>
     <Version>1.0.0</Version>
     <Authors>Nnamdi Michael Okpala</Authors>
+    <Company>OBINexus Computing</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>Thin F# P/Invoke binding for libpolycall 1.5.</Description>
+    <Description>F# P/Invoke binding for the Polycall binding ABI v1 (polycall.dll / libpolycall.so.1, polycall >= 1.1.0). Core: https://github.com/obinexus/polycall</Description>
     <RepositoryUrl>https://github.com/obinexus/fsharp-polycall</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/obinexus/fsharp-polycall</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageTags>polycall;libpolycall;fsharp;pinvoke;ffi;peer-to-peer</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Native.fs" />
     <Compile Include="Polycall.fs" />
+    <Compile Include="Peer.fs" />
   </ItemGroup>
 </Project>

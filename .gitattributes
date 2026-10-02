@@ -1,0 +1,5 @@
+* text=auto
+*.sh text eol=lf
+*.fs text
+*.fsproj text
+*.c text

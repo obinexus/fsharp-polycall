@@ -83,21 +83,40 @@ library and the real `polycall` CLI:
 ```sh
 POLYCALL_LIBRARY=/opt/polycall/lib/libpolycall.so.1 \
 POLYCALL_CLI=/opt/polycall/bin/polycall sh scripts/test.sh
-# or, with only the .NET 8 runtime: dotnet FSharpPolycall.Tests.dll --summary
 ```
 
-It covers the BINDING_ABI.md checklist (version/ABI, run_config, call against
-`polycall start` and `polycall daemon start`, two-node exchange both ways with
+On Windows, against the MSVC build (`polycall.dll`) or the MinGW/UCRT64 build
+(`libpolycall.dll`) of the core:
+
+```powershell
+scripts\test-windows.ps1 -Core C:\polycall\windows-msvc-x64
+scripts\test-windows.ps1 -Core C:\polycall\windows-ucrt64-x64 -BuildDir C:\build\fsharp -Gcc C:\msys64\ucrt64\bin\gcc.exe
+```
+
+Without a .NET SDK the script runs a portable build made elsewhere with
+`dotnet publish` (the IL is the same on every OS; only the .NET 8 runtime is
+needed to run it).
+
+It covers the BINDING_ABI.md checklist (version/ABI, run_config including a
+non-ASCII directory and file name, call against `polycall start` and
+`polycall daemon start`, two-node exchange both ways with
 empty/UTF-8/binary/1 MiB/1 MiB+1 payloads, registry ownership, duplicates,
 auth, dead peer, timeouts, too-small buffers, cancel/close, invalid handles,
-concurrent senders, SafeHandle finalization) and interop with
-`polycall peer serve/send/recv`. With `POLYCALL_INTEROP_ECHO` set to another
-binding's echo agent (e.g. `java ... org.obinexus.polycall.cli.Main`) it also
-exchanges payloads with that binding. Checks that cannot run are reported as
-ignored, never as passed; `scripts/test.sh` exits 77 when no .NET SDK exists.
+concurrent senders and calls, SafeHandle finalization), loader failures
+(missing library, an old 1.0 library, ABI 2 — also in a fresh CLI process)
+and interop with `polycall peer serve/send/recv` (1 MiB both ways). With
+`POLYCALL_INTEROP_ECHO` set to another binding's echo agent (e.g.
+`java ... org.obinexus.polycall.cli.Main`) it also exchanges payloads with
+that binding. Checks that cannot run are reported as ignored, never as
+passed; the scripts exit 77 when no .NET SDK (or portable build) exists.
 
-`tests/fixtures/fake_polycall_abi2.c` is a clearly-labelled fake library used
-only to prove that the loader refuses ABI 2.
+`scripts/test-package.sh` packs `OBINexus.FSharpPolycall` into a local
+directory (never published) and builds and runs a clean consumer project that
+restores it from there against the real library.
+
+`tests/fixtures/fake_polycall.c` builds clearly-labelled fake libraries (ABI
+2, and an old 1.0 core without the ABI v1 symbols) used only to prove that the
+loader refuses them.
 
 ## License
 

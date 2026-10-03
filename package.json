@@ -13,6 +13,7 @@
     "tests/FSharpPolycall.Tests/*.fs",
     "tests/FSharpPolycall.Tests/*.fsproj",
     "tests/fixtures/",
+    "tests/package.test.js",
     "examples/*.fs",
     "examples/*.fsproj",
     "examples/fsharp-polycallrc",

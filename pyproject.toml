@@ -11,5 +11,5 @@ abi = 1
 support = "supported"
 linux_image = "mcr.microsoft.com/dotnet/sdk:8.0"
 build = "dotnet build src/FSharpPolycall.Cli/FSharpPolycall.Cli.fsproj -c Release"
-test = "sh /qa/build-linux-core.sh && POLYCALL_LIBRARY=/opt/polycall/lib/libpolycall.so.1 POLYCALL_CLI=/opt/polycall/bin/polycall sh scripts/test.sh"
-windows_test = "dotnet run --project tests/FSharpPolycall.Tests/FSharpPolycall.Tests.fsproj -c Release -- --summary  (with POLYCALL_LIBRARY=<prefix>/bin/polycall.dll and POLYCALL_CLI=<prefix>/bin/polycall.exe)"
+test = "sh /qa/build-linux-core.sh && apt-get install -y -qq unzip && POLYCALL_LIBRARY=/opt/polycall/lib/libpolycall.so.1 POLYCALL_CLI=/opt/polycall/bin/polycall sh scripts/test.sh && POLYCALL_LIBRARY=/opt/polycall/lib/libpolycall.so.1 sh scripts/test-package.sh"
+windows_test = "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test-windows.ps1 -Core <prefix> [-BuildDir <portable dotnet publish output when no .NET SDK>] [-Gcc <mingw gcc>]  (run once with windows-msvc-x64, once with windows-ucrt64-x64)"

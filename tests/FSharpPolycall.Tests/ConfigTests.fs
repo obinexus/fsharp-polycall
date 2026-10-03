@@ -65,9 +65,29 @@ let tests =
             expectStatus PolycallStatus.InvalidArgument (fun () -> Polycall.runConfig null) |> ignore
             expectStatus PolycallStatus.InvalidArgument (fun () -> Polycall.runConfig "a\000b") |> ignore
 
+        // Non-ASCII directory AND file name: Latin-1 (é), CJK (世界) and a
+        // non-BMP code point (U+1F30D, a UTF-16 surrogate pair). Each outcome
+        // proves the core opened exactly this file: success, a key-specific
+        // error from its content, its described values, and NotFound for a
+        // sibling that does not exist.
         testCase "UTF-8 path is passed intact" <| fun () ->
-            let f = write "café-世界-polycallrc" "log_level=info\n"
-            Polycall.runConfigOrRaise f
+            let dir = Path.Combine(tempDir (), "dossier-é-目录-\U0001F30D")
+            Directory.CreateDirectory dir |> ignore
+            let valid = Path.Combine(dir, "café-世界-\U0001F30D-polycallrc")
+            File.WriteAllText(valid, "log_level=info\nmax_connections=4242\n")
+            Expect.isTrue (File.Exists valid) "the test file exists under its Unicode name"
+            Expect.equal (Polycall.runConfig valid) 0 "strict status for the non-ASCII path"
+            Polycall.runConfigOrRaise valid
+            Polycall.validate valid
+            Expect.stringContains (Polycall.describe valid) "4242" "describe read this file's value"
+            let invalid = Path.Combine(dir, "ñandú-設定-polycallrc")
+            File.WriteAllText(invalid, "max_connections=many\n")
+            let e = expectStatus PolycallStatus.Config (fun () -> Polycall.runConfigOrRaise invalid)
+            Expect.stringContains e.Detail "max_connections" "the core parsed this file's content"
+            let absent = Path.Combine(dir, "absent-ü-不存在-polycallrc")
+            Expect.equal (Polycall.runConfig absent) (int PolycallStatus.NotFound) "a missing non-ASCII path is NotFound"
+            let e = expectStatus PolycallStatus.NotFound (fun () -> Polycall.runConfigOrRaise absent)
+            Expect.stringContains e.Detail "absent-ü-不存在-polycallrc" "the detail carries the UTF-8 path back intact"
 
         testCase "shipped configurations validate for running" <| fun () ->
             for rel in [ "fsharp-polycallrc"; Path.Combine("examples", "fsharp-polycallrc") ] do

@@ -62,6 +62,14 @@ let tests =
             Expect.equal r.Exit 0 r.Stderr
             expectMessage (f.Recv T) "cnode" "c2f-1" payload
 
+            let bigFile = Path.Combine(dir, "c2f-max.bin")
+            let bigBack = Array.zeroCreate<byte> Polycall.PeerMaxPayload
+            Random(4).NextBytes bigBack
+            File.WriteAllBytes(bigFile, bigBack)
+            let r = run cli [ "peer"; "send"; "--from"; "cnode"; "--to"; f.Endpoint; "--id"; "c2f-max"; "--payload-file"; bigFile; "-t"; "20000" ] [] 30000
+            Expect.equal r.Exit 0 r.Stderr
+            expectMessage (f.Recv 20000u) "cnode" "c2f-max" bigBack
+
             let r = run cli [ "peer"; "send"; "--from"; "cnode"; "--to"; f.Endpoint; "--id"; "c2f-2"; "--payload"; "hello from C" ] [] 20000
             Expect.equal r.Exit 0 r.Stderr
             expectMessage (f.Recv T) "cnode" "c2f-2" (bytes "hello from C")

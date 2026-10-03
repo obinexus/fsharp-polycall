@@ -1,6 +1,6 @@
 {
   "name": "fsharp-polycall",
-  "package": "@obinexusltd/fsharp-polycall",
+  "package": "fsharp-polycall",
   "nuget": "OBINexus.FSharpPolycall",
   "version": "1.0.0",
   "language": "F#",

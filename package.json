@@ -1,5 +1,5 @@
 {
-  "name": "@obinexusltd/fsharp-polycall",
+  "name": "fsharp-polycall",
   "version": "1.0.0",
   "description": "F#/.NET P/Invoke binding for the Polycall binding ABI v1 (polycall >= 1.1.0). Source distribution of a .NET 8 project; not a JavaScript library.",
   "main": "index.js",

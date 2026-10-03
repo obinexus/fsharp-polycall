@@ -1,13 +1,13 @@
 'use strict';
 
-// @obinexusltd/fsharp-polycall is a source distribution of an F#/.NET
+// fsharp-polycall is a source distribution of an F#/.NET
 // binding; requiring it from Node.js only locates the packaged files.
 const path = require('node:path');
 
 const fromPackageRoot = (...parts) => path.join(__dirname, ...parts);
 
 module.exports = Object.freeze({
-  packageName: '@obinexusltd/fsharp-polycall',
+  packageName: 'fsharp-polycall',
   language: 'F#',
   abi: 1,
   fsharpProject: fromPackageRoot('src', 'FSharpPolycall', 'FSharpPolycall.fsproj'),
